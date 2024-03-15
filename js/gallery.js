@@ -67,7 +67,6 @@ const images = [
 const gallery = document.querySelector('.gallery');
 
 gallery.insertAdjacentHTML('beforeend', createMarkup(images));
-gallery.addEventListener('click', galleryClickHandler);
 
 function createMarkup(array) {
   return array
@@ -80,12 +79,14 @@ function createMarkup(array) {
          src="${image.preview}"
          data-source="${image.original}"
          alt="${image.description}"
-          />
+         />
        </a>
-      </li>`
+       </li>`
     )
     .join('');
 }
+
+gallery.addEventListener('click', galleryClickHandler);
 
 function galleryClickHandler(event) {
   event.preventDefault();
