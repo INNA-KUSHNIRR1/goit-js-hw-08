@@ -90,14 +90,31 @@ gallery.addEventListener('click', galleryClickHandler);
 
 function galleryClickHandler(event) {
   event.preventDefault();
-  if (event.target === event.currentTarget) {
+  if (event.target.nodeName !== 'IMG') {
     return;
   }
   const currentImage = event.target;
   const imageSource = currentImage.dataset.source;
+  const imageAlt = currentImage.alt;
 
-  const instance = basicLightbox.create(`
-    	<img src="${imageSource}" width="1112" height="640">
-    `);
+  const instance = basicLightbox.create(
+    `
+    	<img src="${imageSource}" alt="${imageAlt}" width="1112" height="640">
+    `,
+    {
+      onShow: instance => {
+        document.addEventListener('keydown', escKeyPressHandler);
+      },
+      onClose: instance => {
+        document.removeEventListener('keydown', escKeyPressHandler);
+      },
+    }
+  );
   instance.show();
+
+  function escKeyPressHandler(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  }
 }
